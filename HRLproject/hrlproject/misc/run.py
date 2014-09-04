@@ -15,8 +15,12 @@ if compname == "CTN04" or compname == "DANIEL-PC":
     sys.path.append(r"D:\Documents\officesvn\HRLproject")
 elif compname == "ctngpu2":
     sys.path.append("/home/ctnuser/drasmuss/HRLproject")
-elif compname == "hybrid"
+elif compname == "hybrid":
     sys.path.append("/home/sean/HRL_link")
+elif compname == "ctn11":
+    sys.path.append("/home/saubin/Github/HRL_1.0")
+    sys.path.append("/home/saubin/Github/HRL_1.0/HRLproject/hrlproject")
+    sys.path.append("/home/saubin/Github/HRL_1.0/HRLproject")
 else:  # assume running on sharcnet
     compname = "sharcnet"
     sys.path.append("/home/drasmuss/HRLproject")
@@ -30,6 +34,7 @@ from hrlproject.misc import HRLutils
 from hrlproject.agent import smdpagent
 from hrlproject.simplenodes import terminationnode, datanode
 
+# What's the difference between the nav_agent and the ctrl_agent? They're the two levels of the hierarchy
 def run_deliveryenvironment(navargs, ctrlargs, tag=None, seed=None):
     """Runs the model on the delivery task.
 
@@ -164,7 +169,8 @@ def run_deliveryenvironment(navargs, ctrlargs, tag=None, seed=None):
     data.record(ctrl_agent.getNode("QNetwork").getNode("actionvals").getOrigin("X"), filter=1e-4, func=min)
     data.record_sparsity(ctrl_agent.getNode("QNetwork").getNode("state_pop").getOrigin("AXON"), filter=1e-4)
     data.record_avg(ctrl_agent.getNode("QNetwork").getNode("valdiff").getOrigin("X"), filter=1e-5)
-    data.record_avg(ctrl_agent.getNode("ErrorNetwork").getOrigin("error"), filter=1e-5)
+    # ErrorNetwork is apparently not the correct name and hell if I know what the correct one is
+    #data.record_avg(ctrl_agent.getNode("ErrorNetwork").getOrigin("error"), filter=1e-5)
 
     net.add_to_nengo()
 #    net.view()
@@ -406,7 +412,8 @@ def run_flat_delivery(args, seed=None):
     data.record_avg(nav_agent.getNode("QNetwork").getNode("actionvals").getOrigin("X"), filter=1e-5)
     data.record_sparsity(nav_agent.getNode("QNetwork").getNode("state_pop").getOrigin("AXON"), filter=1e-5)
     data.record_avg(nav_agent.getNode("QNetwork").getNode("valdiff").getOrigin("X"), filter=1e-5)
-    data.record_avg(nav_agent.getNode("ErrorNetwork").getOrigin("error"), filter=1e-5)
+    # ErrorNetwork is apparently not the correct name and hell if I know what the correct one is
+    #data.record_avg(nav_agent.getNode("ErrorNetwork").getOrigin("error"), filter=1e-5)
 
     net.add_to_nengo()
     net.view()
@@ -546,12 +553,12 @@ def run_badreenvironment(nav_args, ctrl_args, seed=None, flat=False):
 #    net.view()
     net.run(2000)
 
-NodeThreadPool.setNumJavaThreads(4)
+NodeThreadPool.setNumJavaThreads(8) #Set it equal to the number of cores?
 
-run_deliveryenvironment({"learningrate": 9e-10, "discount": 0.1, "Qradius": 2.0,
-                         "load_weights": os.path.join("weights", "contextgrid_decoder", "SMDPAgent")},
-                        {"learningrate": 9e-10, "discount": 0.1, "load_weights": None},
-                        seed=1)
+#run_deliveryenvironment({"learningrate": 9e-10, "discount": 0.1, "Qradius": 2.0,
+#                         "load_weights": os.path.join("weights", "contextgrid_decoder", "SMDPAgent")},
+#                        {"learningrate": 9e-10, "discount": 0.1, "load_weights": None},
+#                        seed=1)
 
 #run_contextenvironment({"learningrate":9e-10, "discount":0.1, "Qradius":2.0,
 #                        "load_weights":None},
@@ -562,6 +569,11 @@ run_deliveryenvironment({"learningrate": 9e-10, "discount": 0.1, "Qradius": 2.0,
 #run_flat_delivery({"learningrate":9e-10, "discount":0.1, "Qradius":2.0,
 #                   "load_weights":os.path.join("delivery", "flat", "NavAgent")},
 #                  seed=2)
+
+run_flat_delivery({"learningrate":9e-10, "manual_control":True, "discount":0.1, "Qradius":2.0,
+                   "load_weights":os.path.join("delivery", "flat", "NavAgent")},
+                  seed=2)
+
 
 #run_badreenvironment({"learningrate":9e-7, "state_threshold":0.8}, #9e-10
 #                     {"learningrate":7e-7, "state_threshold":0.0}, #7e-10

@@ -85,7 +85,3 @@ class DataNode(nef.SimpleNode):
         if self.show_plots != None and self.t % self.show_plots < 1e-5:
             for i, r in enumerate(self.records):
                 self.plotter.doPlot([x[0] for x in r], [x[1] for x in r], str(i))
-
-
-
-

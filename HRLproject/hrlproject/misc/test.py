@@ -18,6 +18,10 @@ elif compname == "hybrid":
     sys.path.append("/home/sean/HRL_link/HRLproject/hrlproject/misc")
     sys.path.append("/home/sean/HRL_link/HRLproject/hrlproject")
     sys.path.append("/home/sean/HRL_link/HRLproject")
+elif compname == "ctn11":
+    sys.path.append("/home/saubin/Github/HRL_1.0")
+    sys.path.append("/home/saubin/Github/HRL_1.0/HRLproject/hrlproject")
+    sys.path.append("/home/saubin/Github/HRL_1.0/HRLproject")
 else:  # assume running on sharcnet
     compname = "sharcnet"
     sys.path.append("/home/drasmuss/HRLproject")
@@ -45,7 +49,7 @@ import nef
 import timeview
 from nef.templates import hpes_termination
 
-
+# This method doesn't appear to be used anymore
 def test_errorcalc():
     test = NetworkImpl()
     test.name = "testErrorCalc"
@@ -66,7 +70,7 @@ def test_errorcalc():
 #    reward = FunctionInput("reward", [PiecewiseConstantFunction([0.5,0.7],[0.0,1.0,0.0])], Units.UNK)
 
     #test with equal Q/reward change
-    reset = FunctionInput("reset", [PiecewiseConstantFunction([0.1], [1.0, 0.0])], Units.UNK)
+    reset = FunctionInput("reset", [PiecewiseConstantFunction([0.1], [1.0, 0.0])], Units.UNK) #UNK means unknown
     Q = FunctionInput("Q", [PiecewiseConstantFunction([0.7], [0.5, 0.3])], Units.UNK)
     reward = FunctionInput("reward", [PiecewiseConstantFunction([0.3, 0.5], [0.0, 1.0, 0.0])], Units.UNK)
 
@@ -83,7 +87,7 @@ def test_errorcalc():
     test.addProjection(Q.getOrigin("origin"), e.getTermination("currQ"))
     test.addProjection(reward.getOrigin("origin"), e.getTermination("reward"))
 
-#    world.add(test)
+#    world.add(test) # Don't know what "world" is here
 
 def test_decoderlearning():
     net = nef.Network("test_decoderlearning")
@@ -200,6 +204,7 @@ def test_actionvalues():
 
     net.add_to_nengo()
 
+# gets weird "colour grid error"
 def test_gridworld():
     net = nef.Network("testGridWorld")
 
@@ -207,7 +212,7 @@ def test_gridworld():
     stateD = 2
     actions = [("up", [0, 1]), ("right", [1, 0]), ("down", [0, -1]), ("left", [-1, 0])]
 
-    agent = smdpagent.SMDPAgent(stateN, stateD, actions, Qradius=1, stateradius=3, rewardradius=1, learning=True)
+    agent = smdpagent.SMDPAgent(stateN, stateD, actions, Qradius=1, stateradius=3, rewardradius=1, learningrate=9e-10)
     net.add(agent)
 
 #    agent.loadWeights("weights\\potjansgrid")
@@ -1082,13 +1087,13 @@ def test_pongenvironment_hier():
     net.add_to_nengo()
     net.view(play=1000)
     
-
+test_gridworld()
 #test_decoderlearning()
 #test_placecellenvironment()
 #test_sparsestate()
 #test_contextenvironment()
 #test_intercepts()
-test_deliveryenvironment()
+#test_deliveryenvironment()
 #test_terminationnode()
 #test_bmp()
 #test_placecell_bmp()

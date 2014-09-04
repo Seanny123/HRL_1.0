@@ -61,6 +61,7 @@ class QNetwork(NetworkImpl):
         state_fac = HRLutils.node_fac()
         state_fac.setIntercept(IndicatorPDF(state_threshold, 1.0))
 
+        print("making the state_pop")
         state_pop = net.make("state_pop", stateN, stateD,
                               radius=stateradius,
                               node_factory=state_fac,
@@ -71,6 +72,7 @@ class QNetwork(NetworkImpl):
         net.connect(state_relay, state_pop, pstc=tauPSC)
 
         # store the state value (used to drive population encoding previous state)
+        print("create the saved state memory")
         saved_state = memory.Memory("saved_state", N * 4, stateD, inputscale=50, radius=stateradius,
                                     direct_storage=True)
         net.add(saved_state)
@@ -87,6 +89,7 @@ class QNetwork(NetworkImpl):
 
         net.connect(saved_state, old_state_pop, pstc=tauPSC)
 
+        print("setup the action nodes")
         # set up action nodes
         if self.neuron_learning:
             # use ActionValues network to compute Q values

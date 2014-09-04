@@ -1,5 +1,6 @@
 from java.awt import Color
 
+# timeview if from Nengo 1.4
 from timeview.watches.watchtemplate import WatchTemplate
 from timeview import components
 

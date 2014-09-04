@@ -1,7 +1,6 @@
 Steps:
 
-Run once on Nengo 1.4 with manual control
-Install Nengo 1.4 and Nengo 2.0 simultaneously
+Create some layouts and records to show duplicate behaviours. Re-read Dan's e-mail
 Port manual control to Nengo 2.0
 Run manual control with Nengo 2.0
 Figure out what's left of Nengo and OpenCL
@@ -30,9 +29,4 @@ Aside:
 Is there any way to distinguish encrypted information (or any type of code really) from randomly distributed Gaussian noise?
 
 cs.stackexchange questions:
-Number of environmental contexts in hierarchical learning
-
-cogsci.stackexchange questions:
-What mechanisms does the brain employ to do SLAM?
-
-I've seen a lot work done where fancy computer algorithms are mapped to neural hardware with some interesting results. Within this vein, I was wondering how t
+Number of environmental contexts in hierarchical learning, do they have to be proportional to the number of rewards?

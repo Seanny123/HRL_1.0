@@ -54,7 +54,7 @@ class SMDPAgent(NetworkImpl):
         useBGNode = True # if True, use a simplenode to perform BG function
         useErrorNode = True # if True, use a simplenode to perform error calculation
 
-        # calculate Q values # By "weights" does he mean the amount of reward?
+        # calculate Q values # By "weights" does he mean the amount of reward? No he means the connection weights for computing the function
         print "building Q network"
         q_net = Qnetwork.QNetwork(stateN, stateD, state_encoders, actions, learningrate, stateradius, Qradius,
                                   load_weights, state_evals, state_threshold)
@@ -70,7 +70,7 @@ class SMDPAgent(NetworkImpl):
             net.add(bg)
 
         if manual_control:
-            net.make_input("action_control", [0 for _ in range(num_actions)])
+            net.make_input("action_control", [0 for _ in range(num_actions)]) # Will this make a controllable input?
             net.connect("action_control", bg.getTermination("input"))
         elif optimal_control:
             biased_vals = net.make_array("biased_vals", 50, num_actions)
@@ -99,6 +99,7 @@ class SMDPAgent(NetworkImpl):
         net.connect(bg.getOrigin("saved_vals"), error_net.getTermination("saved_bg_input"))
         net.connect(error_net.getOrigin("error"), q_net.getTermination("error"))
 
+        # Not necessary in Nengo 2.0, since you can just connect anything you want
         self.exposeTermination(q_net.getTermination("state"), "state_input")
         self.exposeTermination(q_net.getTermination("save_state"), "save_state")
         self.exposeTermination(error_net.getTermination("reward"), "reward")
