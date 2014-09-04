@@ -70,7 +70,9 @@ class SMDPAgent(NetworkImpl):
             net.add(bg)
 
         if manual_control:
-            net.make_input("action_control", [0 for _ in range(num_actions)]) # Will this make a controllable input?
+            # This makes a controllable input
+            # The action sequence is up, right, down, left ???
+            net.make_input("action_control", [0 for _ in range(num_actions)])
             net.connect("action_control", bg.getTermination("input"))
         elif optimal_control:
             biased_vals = net.make_array("biased_vals", 50, num_actions)

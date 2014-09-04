@@ -30,3 +30,5 @@ Is there any way to distinguish encrypted information (or any type of code reall
 
 cs.stackexchange questions:
 Number of environmental contexts in hierarchical learning, do they have to be proportional to the number of rewards?
+
+Cool stuff to display in layout:

@@ -2,6 +2,7 @@ import copy
 
 import nef
 
+# OH GOD, WTF DOES THIS DO?
 class BGNode(nef.SimpleNode):
     """Node to emulate the function of BGNetwork."""
     
