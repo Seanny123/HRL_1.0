@@ -80,7 +80,7 @@ class QNetwork(NetworkImpl):
 
         net.connect(state_relay, saved_state.getTermination("target"))
 
-        # create population reprenting previous state
+        # create population representing previous state
         old_state_pop = net.make("old_state_pop", stateN, stateD,
                               radius=stateradius,
                               node_factory=state_fac,
