@@ -50,7 +50,8 @@ class QNetwork(NetworkImpl):
         num_actions = len(actions)
         init_Qs = 0.2 #initial value for all Q values
         self.neuron_learning = False
-            # if True, use neuron--neuron weight learning, otherwise, use decoder learning
+        # if True, use neuron--neuron weight learning,
+        # otherwise, use decoder learning
 
         # set up relays
         state_relay = net.make("state_relay", 1, stateD, mode="direct")

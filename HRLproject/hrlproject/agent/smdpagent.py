@@ -95,6 +95,7 @@ class SMDPAgent(NetworkImpl):
             error_net = errornode.ErrorNode(num_actions, Qradius, discount=discount)
         net.add(error_net)
 
+        # Why does the Qnetwork need the old values and the new values?
         net.connect(q_net.getOrigin("vals"), error_net.getTermination("vals"))
         net.connect(q_net.getOrigin("old_vals"), error_net.getTermination("old_vals"))
         net.connect(bg.getOrigin("curr_vals"), error_net.getTermination("curr_bg_input"))

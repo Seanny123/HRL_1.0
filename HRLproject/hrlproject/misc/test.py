@@ -509,7 +509,7 @@ def test_deliveryenvironment():
 
     ###ENVIRONMENT
 
-    # Instantiate the delivery environment class, which holds the place-cells and the reward, I think?
+    # Instantiate the delivery environment class, which holds the place-cells and the reward
     env = deliveryenvironment.DeliveryEnvironment(actions, HRLutils.datafile("contextmap.bmp"),
                                                   colormap={-16777216:"wall",
                                                            - 1:"floor",
@@ -526,7 +526,7 @@ def test_deliveryenvironment():
     ###NAV AGENT
 
     enc = env.gen_encoders(stateN, contextD, context_scale)
-    enc = MU.prod(enc, 1.0 / max_state_input) #Wtf is MU?
+    enc = MU.prod(enc, 1.0 / max_state_input)
 
     with open(HRLutils.datafile("contextgrid_evalpoints.txt")) as f:
         evals = [[float(x) for x in l.split(" ")] for l in f.readlines()]
