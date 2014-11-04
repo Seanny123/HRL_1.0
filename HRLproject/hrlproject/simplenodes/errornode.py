@@ -30,6 +30,7 @@ class ErrorNode(nef.SimpleNode):
         self.create_termination("old_vals", self.gen_set_func("old_vals", self.d))
         self.create_termination("curr_bg_input", self.gen_set_func("curr_bg", self.d))
         self.create_termination("saved_bg_input", self.gen_set_func("saved_bg", self.d))
+        # WTF do these terminations do?
         self.create_termination("reward", self.gen_set_func("reward", 1))
         self.create_termination("reset", self.gen_set_func("reset_val", 1))
         self.create_termination("learn", self.gen_set_func("learn", 1))

@@ -23,8 +23,9 @@ class QNetwork(NetworkImpl):
     :output old_vals: Q values of saved state
     """
 
-    def __init__(self, stateN, stateD, state_encoders, actions, learningrate, stateradius=1.0, Qradius=1.0,
-                 load_weights=None, state_evals=None, state_threshold=0.0):
+    def __init__(self, stateN, stateD, state_encoders, actions, learningrate,
+                stateradius=1.0, Qradius=1.0,
+                load_weights=None, state_evals=None, state_threshold=0.0):
         """Builds the QNetwork.
 
         :param stateN: number of neurons to use to represent state
@@ -152,7 +153,7 @@ class QNetwork(NetworkImpl):
 
         # calculate diff between curr_state and saved_state and use that to gate valdiff (we
         # only want to train the curr state based on previous state when the two have similar
-        # values)
+        # values) # WTF does that mean
         statediff = net.make_array("statediff", N, stateD, intercept=(0.2, 1))
             # note: threshold > 0 so that there is a deadzone in the middle (when the states
             # are similar) where there will be no output inhibition

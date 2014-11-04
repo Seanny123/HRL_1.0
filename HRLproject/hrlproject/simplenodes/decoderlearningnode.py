@@ -44,5 +44,3 @@ class DecoderLearningNode(nef.SimpleNode):
     
     def termination_error(self, x, pstc=0.01):
         self.error = copy.deepcopy(x)
-            
-            

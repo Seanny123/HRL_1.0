@@ -18,10 +18,10 @@ elif compname == "hybrid":
     sys.path.append("/home/sean/HRL_link/HRLproject/hrlproject/misc")
     sys.path.append("/home/sean/HRL_link/HRLproject/hrlproject")
     sys.path.append("/home/sean/HRL_link/HRLproject")
-elif compname == "ctn11":
-    sys.path.append("/home/saubin/Github/HRL_1.0")
-    sys.path.append("/home/saubin/Github/HRL_1.0/HRLproject/hrlproject")
-    sys.path.append("/home/saubin/Github/HRL_1.0/HRLproject")
+elif compname == "CTN11":
+    sys.path.append("/home/saubin/git/HRL_1.0")
+    sys.path.append("/home/saubin/git/HRL_1.0/HRLproject/hrlproject")
+    sys.path.append("/home/saubin/git/HRL_1.0/HRLproject")
 else:  # assume running on sharcnet
     compname = "sharcnet"
     sys.path.append("/home/drasmuss/HRLproject")
@@ -121,6 +121,7 @@ def test_decoderlearning():
     net.add_to_nengo()
     net.view()
 
+# What why not use hPES in your actual network then?
 def test_learning():
     test = NetworkImpl()
     test.name = "testLearning"
@@ -168,6 +169,7 @@ def test_learning():
 #    world.add(test)
 
 def test_actionvalues():
+    """NOTE: this isn't used anymore!"""
     net = nef.Network("testActionValues")
 
     stateN = 200
@@ -193,16 +195,18 @@ def test_actionvalues():
     #set up action nodes
     decoders = state_pop.addDecodedOrigin("init_decoders", [ConstantFunction(stateD, init_Qs)], "AXON").getDecoders()
 
-    actionvals = actionvalues.ActionValues(N, stateN, actions, learningrate, Qradius=Qradius, init_decoders=decoders)
+    actionvals = actionvalues.ActionValues("agent_actions", N, stateN, actions, learningrate, Qradius=Qradius, init_decoders=decoders)
     net.add(actionvals)
 
-    net.connect(state_pop.getOrigin("AXON"), actionvals.getTermination("curr_state"))
+    # Don't know what this does, so I'm going to comment it out.
+    net.connect(state_pop.getOrigin("AXON"), actionvals.getTermination("state"))
 
     #input
     inp = net.make_input("input", [0, 0])
     net.connect(inp, state_pop.getTermination("state_input"))
 
     net.add_to_nengo()
+    net.view()
 
 # gets weird "colour grid error"
 def test_gridworld():
@@ -216,7 +220,7 @@ def test_gridworld():
     net.add(agent)
 
 #    agent.loadWeights("weights\\potjansgrid")
-
+    # Could I make an even smaller grid?
     env = gridworldenvironment.GridWorldEnvironment(stateD, actions, HRLutils.datafile("smallgrid.txt"),
                                                     cartesian=True, delay=(0.6, 0.9), datacollection=False)
     net.add(env)
@@ -641,7 +645,6 @@ def test_bmp():
     for c in colours:
         if not c in unique_colours:
             unique_colours += [c]
-
     print unique_colours
 
 #    g2d = img.createGraphics()
@@ -1104,5 +1107,4 @@ test_gridworld()
 #test_pongenvironment()
 #test_pongenvironment_hier()
 
-#from misc import pdb
-#pdb.run("test_contextenvironment()")
+#test_contextenvironment()

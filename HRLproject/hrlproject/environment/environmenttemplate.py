@@ -29,7 +29,7 @@ class EnvironmentTemplate(nef.SimpleNode):
         
     def termination_action(self, a, pstc=0.01):
         # set the selected action to the one with highest similarity to the
-        # current action input
+        # available actions
         self.action = max(self.actions, key=lambda x: MU.prod(a, x[1]))
 
     def origin_state(self):

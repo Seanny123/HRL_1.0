@@ -1,5 +1,6 @@
 import random
 import copy
+import pdb
 
 from hrlproject.environment import environmenttemplate as et
 
@@ -35,7 +36,7 @@ class GridWorldEnvironment(et.EnvironmentTemplate):
         self.update_time = 0.5
         self.learntime = [-1, -1]
         self.resettime = [0.05, 0.1] # reset right at the beginning to set things up
-        self.Qs = {} # store the Q values, just for display
+        self.Qs = {} # store the Q values, just for display #WTF is the format of these things?
         self.num_actions = len(actions)
         self.chosen_action = None
         self.datacollection = datacollection
@@ -66,18 +67,25 @@ class GridWorldEnvironment(et.EnvironmentTemplate):
             self.yscale = 1
             self.xoffset = 0
 
+        # Create a grid object where the dots are barriers, the spaces are space and the x is the goal
         self.grid = [[self.Cell(c, j - self.xoffset, self.yscale * (i - self.yoffset)) for j, c in enumerate(row)] for i, row in enumerate(data)]
-
         self.state = self.pickRandomLocation()
 
-        self.create_origin("learn", lambda: [1.0 if self.t > self.learntime[0] and self.t < self.learntime[1] else 0.0])
-        self.create_origin("reset", lambda: [1.0 if self.t > self.resettime[0] and self.t < self.resettime[1] else 0.0])
+        self.create_origin(
+            "learn",
+            lambda: [1.0 if self.t > self.learntime[0] and self.t < self.learntime[1] else 0.0]
+        )
+        self.create_origin(
+            "reset", 
+            lambda: [1.0 if self.t > self.resettime[0] and self.t < self.resettime[1] else 0.0]
+        )
 
         def store_Qs(x, dimensions=len(actions), pstc=0.01):
             self.Qinput = x
         self.create_termination("Qs", store_Qs)
 
     def tick(self):
+        """The basic cycle of the environment is act, learn and reset. This method takes care of that scheduling"""
         # check if we want to do a state update
         if self.t > self.update_time:
 
@@ -90,11 +98,14 @@ class GridWorldEnvironment(et.EnvironmentTemplate):
 
             # store the current Qval inputs
             x, y = self.state
+            # (x, y) = all_the_Qs
             self.Qs[(int(x + self.xoffset), int(self.yscale * y + self.yoffset))] = [n for n in self.Qinput]
+            print("DEM Qs Doe!")
             print self.Qs
 
             # update state
             if self.getCell(self.state).target:
+                print("REACHED THE TARGET!")
                 self.state = self.pickRandomLocation()
 
                 # data collection
@@ -120,6 +131,7 @@ class GridWorldEnvironment(et.EnvironmentTemplate):
                     dest = self.getCell([self.state[0] - 1, self.state[1]])
                 else:
                     print "Unrecognized action"
+                print("Going %s" %self.chosen_action[0])
 
                 if not dest.wall:
                     self.state = dest.location()
@@ -130,18 +142,26 @@ class GridWorldEnvironment(et.EnvironmentTemplate):
 
             # update reward
             if self.getCell(self.state).target:
+                print("HOT DAMN REWARD")
                 self.reward = 1
             else:
                 self.reward = 0
 
-            # calculate learn/reset periods
+            # calculate the new learn/reset periods
             statedelay = 0.2 # time to wait after a statechange
             learninterval = 0.1 # time to learn for
             resetdelay = 0.1 # time between learn and reset
             resetinterval = 0.05 # time to reset for
 
-            self.learntime = [self.t + statedelay, self.t + statedelay + learninterval]
-            self.resettime = [self.learntime[1] + resetdelay, self.learntime[1] + resetdelay + resetinterval]
+            self.learntime = [
+                self.t + statedelay, 
+                self.t + statedelay + learninterval
+            ]
+            # obviously the reset time
+            self.resettime = [
+                self.learntime[1] + resetdelay, 
+                self.learntime[1] + resetdelay + resetinterval
+            ]
 
             # override movement for data collection
             if self.datacollection:
@@ -151,6 +171,7 @@ class GridWorldEnvironment(et.EnvironmentTemplate):
 
         # check if we want to look for an action from the agent
         if self.t > self.resettime[0] and self.t < self.resettime[1]:
+            # Get the action from agent input
             self.chosen_action = copy.deepcopy(self.action)
 
     def getCell(self, location):

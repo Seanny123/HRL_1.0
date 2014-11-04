@@ -17,10 +17,10 @@ elif compname == "ctngpu2":
     sys.path.append("/home/ctnuser/drasmuss/HRLproject")
 elif compname == "hybrid":
     sys.path.append("/home/sean/HRL_link")
-elif compname == "ctn11":
-    sys.path.append("/home/saubin/Github/HRL_1.0")
-    sys.path.append("/home/saubin/Github/HRL_1.0/HRLproject/hrlproject")
-    sys.path.append("/home/saubin/Github/HRL_1.0/HRLproject")
+elif compname == "CTN11":
+    sys.path.append("/home/saubin/git/HRL_1.0")
+    sys.path.append("/home/saubin/git/HRL_1.0/HRLproject/hrlproject")
+    sys.path.append("/home/saubin/git/HRL_1.0/HRLproject")
 else:  # assume running on sharcnet
     compname = "sharcnet"
     sys.path.append("/home/drasmuss/HRLproject")
@@ -380,11 +380,14 @@ def run_flat_delivery(args, seed=None):
 
     print "agent neurons:", nav_agent.countNeurons()
 
+    # Connect the agents actions to the environment so the agent can act upon the environment
     net.connect(nav_agent.getOrigin("action_output"), env.getTermination("action"))
+    # Connect the environment state to the agent, so the agent knows the effect of it's action
     net.connect(env.getOrigin("placewcontext"), nav_agent.getTermination("state_input"))
 #    net.connect(env.getOrigin("reward"), nav_agent.getTermination("reward"))
 #    net.connect(env.getOrigin("optimal_move"), nav_agent.getTermination("bg_input"))
 
+    # termination node for nav_agent (just a timer that goes off regularly)
     nav_term_node = terminationnode.TerminationNode({terminationnode.Timer((0.6, 0.9)):None}, env,
                                                     name="NavTermNode", contextD=2)
     net.add(nav_term_node)
@@ -394,6 +397,7 @@ def run_flat_delivery(args, seed=None):
     net.connect(nav_term_node.getOrigin("reset"), nav_agent.getTermination("save_state"))
     net.connect(nav_term_node.getOrigin("reset"), nav_agent.getTermination("save_action"))
 
+    # WTF why not connect directly? # Maybe this is the only way to make a direct connection between outputs in this version of Nengo?
     reward_relay = net.make("reward_relay", 1, 1, mode="direct")
     reward_relay.fixMode()
     net.connect(env.getOrigin("reward"), reward_relay)

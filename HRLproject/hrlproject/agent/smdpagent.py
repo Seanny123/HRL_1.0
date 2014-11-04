@@ -56,8 +56,9 @@ class SMDPAgent(NetworkImpl):
 
         # calculate Q values # By "weights" does he mean the amount of reward? No he means the connection weights for computing the function
         print "building Q network"
-        q_net = Qnetwork.QNetwork(stateN, stateD, state_encoders, actions, learningrate, stateradius, Qradius,
-                                  load_weights, state_evals, state_threshold)
+        q_net = Qnetwork.QNetwork(stateN, stateD, state_encoders, actions,
+            learningrate, stateradius, Qradius, load_weights, state_evals,
+            state_threshold)
         net.add(q_net)
 
         # create basal ganglia
