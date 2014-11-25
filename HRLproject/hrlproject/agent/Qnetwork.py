@@ -56,8 +56,8 @@ class QNetwork(NetworkImpl):
 
         # set up relays
         state_relay = net.make("state_relay", 1, stateD, mode="direct")
-        state_relay.fixMode()
-        state_relay.addDecodedTermination("input", MU.I(stateD), 0.001, False)
+        state_relay.fixMode() # This apparently fixes the simulator mode to the curremt mode, so I'm guessing we just don't want it over-ridden by an over-zealous config file.
+        state_relay.addDecodedTermination("input", MU.I(stateD), 0.001, False) # WTF
 
         # create state population
         state_fac = HRLutils.node_fac()
@@ -153,7 +153,7 @@ class QNetwork(NetworkImpl):
 
         # calculate diff between curr_state and saved_state and use that to gate valdiff (we
         # only want to train the curr state based on previous state when the two have similar
-        # values) # WTF does that mean
+        # values) # WTF does that mean and what is with these weird intercept
         statediff = net.make_array("statediff", N, stateD, intercept=(0.2, 1))
             # note: threshold > 0 so that there is a deadzone in the middle (when the states
             # are similar) where there will be no output inhibition

@@ -30,7 +30,7 @@ else:  # assume running on sharcnet
 #HRLutils.full_reset()
 
 from hrlproject.misc import HRLutils, gridworldwatch, boxworldwatch
-from hrlproject.agent import smdpagent, errorcalc, actionvalues
+from hrlproject.agent import smdpagent, errorcalc, actionvalues, memory
 from hrlproject.environment import (gridworldenvironment, boxenvironment,
                                     contextenvironment, deliveryenvironment,
                                     placecell_bmp, badreenvironment,
@@ -96,12 +96,15 @@ def test_decoderlearning():
     learningrate = 1e-8
     N = 100
 
+    # Basically repeating, periodic inputs with random fourier components
     fin1 = net.make_fourier_input('fin1', base=0.1, high=10, power=0.5, seed=12)
     fin2 = net.make_fourier_input('fin2', base=0.1, high=10, power=0.5, seed=13)
 
+    # Put the two dimensions together
     pre = net.make("pre", N, 2)
     net.connect(fin1, pre, transform=[[1], [0]])
     net.connect(fin2, pre, transform=[[0], [1]])
+
 
     err = net.make("err", N, 2)
     net.connect(fin1, err, transform=[[1], [0]])
@@ -113,8 +116,9 @@ def test_decoderlearning():
 
     net.connect(err, dlnode.getTermination("error"))
 
-    learn = net.make_input("learn", [1])
-    net.connect(learn, dlnode.getTermination("learn"))
+    # Was previously used to modulate learning
+    #learn = net.make_input("learn", [1])
+    #net.connect(learn, dlnode.getTermination("learn"))
 
     net.network.setMode(SimulationMode.RATE)
 
@@ -1089,9 +1093,27 @@ def test_pongenvironment_hier():
     
     net.add_to_nengo()
     net.view(play=1000)
-    
-test_gridworld()
-#test_decoderlearning()
+
+def test_memory():
+    stateradius = 1.0
+    N = 50
+    stateD = 4
+    net = nef.Network("test_memory")
+
+    saved_state = memory.Memory("saved_state", N * 4, stateD, inputscale=50, radius=stateradius,
+                                    direct_storage=True)
+    net.add(saved_state)
+
+    state_relay = net.make_input("state_relay", [1,0,0,0])
+    net.connect(state_relay, saved_state.getTermination("target"))
+    gate_input = net.make_input("gate_input", [1])
+    net.connect(gate_input, saved_state.getTermination("transfer"))
+    net.add_to_nengo()
+    net.view(play=1000)
+
+#test_memory()
+#test_gridworld()
+test_decoderlearning()
 #test_placecellenvironment()
 #test_sparsestate()
 #test_contextenvironment()
@@ -1103,7 +1125,6 @@ test_gridworld()
 #test_errornode()
 #test_flat_delivery()
 #test_badreenvironment()
-#test_decoderlearning()
 #test_pongenvironment()
 #test_pongenvironment_hier()
 

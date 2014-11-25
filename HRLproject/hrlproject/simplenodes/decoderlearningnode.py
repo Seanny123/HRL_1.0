@@ -36,7 +36,7 @@ class DecoderLearningNode(nef.SimpleNode):
                 # activity was null for some reason, just skip this update
                 return
 
-            # update decoders
+            # update decoders # What does this return? Like, how does PES work anyways?
             decoders = self.origin.getDecoders()
             # weight change for decoder i is activity of neuron i * error(maybe a vector) * learning rate
             deltas = [[a * e * self.rate for e in self.error] for a in activity]

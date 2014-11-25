@@ -34,7 +34,7 @@ class ErrorNode(nef.SimpleNode):
         self.create_termination("reward", self.gen_set_func("reward", 1))
         self.create_termination("reset", self.gen_set_func("reset_val", 1))
         self.create_termination("learn", self.gen_set_func("learn", 1))
-                                
+
     def gen_set_func(self, attr, d, pstc=0.01):
         def set_func(x, dimensions=d, pstc=pstc):
             if dimensions > 1:
