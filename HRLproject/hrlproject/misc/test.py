@@ -212,20 +212,22 @@ def test_actionvalues():
     net.add_to_nengo()
     net.view()
 
-# gets weird "colour grid error"
 def test_gridworld():
+    # WTF? Does this thing even get punished when it hits a wall? WHAT. IT DOESN'T. WHY.
+    # Also, it apparently receives a 0 default reward, unlike the continuous task. BAD.
     net = nef.Network("testGridWorld")
 
     stateN = 400
     stateD = 2
     actions = [("up", [0, 1]), ("right", [1, 0]), ("down", [0, -1]), ("left", [-1, 0])]
-
-    agent = smdpagent.SMDPAgent(stateN, stateD, actions, Qradius=1, stateradius=3, rewardradius=1, learningrate=9e-10)
+    # Optimal control really doesn't work here
+    # up, right, down, left
+    agent = smdpagent.SMDPAgent(stateN, stateD, actions, Qradius=1, stateradius=3, rewardradius=1, learningrate=9e-10, manual_control=False)
     net.add(agent)
 
 #    agent.loadWeights("weights\\potjansgrid")
     # Could I make an even smaller grid?
-    env = gridworldenvironment.GridWorldEnvironment(stateD, actions, HRLutils.datafile("smallgrid.txt"),
+    env = gridworldenvironment.GridWorldEnvironment(stateD, actions, HRLutils.datafile("tinygrid.txt"),
                                                     cartesian=True, delay=(0.6, 0.9), datacollection=False)
     net.add(env)
 
@@ -239,11 +241,15 @@ def test_gridworld():
     net.connect(agent.getOrigin("action_output"), env.getTermination("action"))
     net.connect(agent.getOrigin("Qs"), env.getTermination("Qs"))
 
+    #
     net.add_to_nengo()
-    view = timeview.View(net.network, update_frequency=5)
-    view.add_watch(gridworldwatch.GridWorldWatch())
-    view.restore()
+    net.view()
+    # I think this stuff was breaking things?
+    #view = timeview.View(net.network, update_frequency=5)
+    #view.add_watch(gridworldwatch.GridWorldWatch())
+    #view.restore()
 
+# The box world view doesn't work either
 def test_boxworld():
     net = nef.Network("testBoxWorld")
 
@@ -255,7 +261,7 @@ def test_boxworld():
                                          delay=(0.6, 0.9), cellwidth=1.0, dx=0.0015)
     net.add(env)
 
-    agent = smdpagent.SMDPAgent(stateN, stateD, actions, Qradius=1, stateradius=3, rewardradius=1, learning=True)
+    agent = smdpagent.SMDPAgent(stateN, stateD, actions, Qradius=1, stateradius=3, rewardradius=1)#, learning=True)
     net.add(agent)
 
 #    agent.loadWeights("weights\\smallgrid")
@@ -1111,9 +1117,10 @@ def test_memory():
     net.add_to_nengo()
     net.view(play=1000)
 
+#test_boxworld()
 #test_memory()
-#test_gridworld()
-test_decoderlearning()
+test_gridworld()
+#test_decoderlearning()
 #test_placecellenvironment()
 #test_sparsestate()
 #test_contextenvironment()

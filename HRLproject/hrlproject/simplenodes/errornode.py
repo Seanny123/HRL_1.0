@@ -43,7 +43,8 @@ class ErrorNode(nef.SimpleNode):
                 setattr(self, attr, x[0])
             
         return set_func
-        
+    
+    # I'm assuming this was another way to name an origin?
     def origin_error(self):
         if self.learn < 0.1:
             return [0 for _ in range(self.d)]
@@ -61,7 +62,8 @@ class ErrorNode(nef.SimpleNode):
         e = [x+self.pos_bias if self.saved_bg[i] < 0 else x for i,x in enumerate(e)]
         
         return e
-            
+    
+    # but where is this used? Just to show that there is an error, regardless of what dimension it's in?
     def origin_curr_error(self):
         return [self.curr_error]
         

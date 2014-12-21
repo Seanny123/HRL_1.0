@@ -57,7 +57,7 @@ class QNetwork(NetworkImpl):
         # set up relays
         state_relay = net.make("state_relay", 1, stateD, mode="direct")
         state_relay.fixMode() # This apparently fixes the simulator mode to the curremt mode, so I'm guessing we just don't want it over-ridden by an over-zealous config file.
-        state_relay.addDecodedTermination("input", MU.I(stateD), 0.001, False) # WTF
+        state_relay.addDecodedTermination("input", MU.I(stateD), 0.001, False)
 
         # create state population
         state_fac = HRLutils.node_fac()

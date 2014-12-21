@@ -412,12 +412,14 @@ def run_flat_delivery(args, seed=None):
     #data collection node
     data = datanode.DataNode(period=5, show_plots=None, filename=HRLutils.datafile("dataoutput_%s.txt" % seed))
     net.add(data)
-    data.record_avg(env.getOrigin("reward"), filter=1e-5)
-    data.record_avg(nav_agent.getNode("QNetwork").getNode("actionvals").getOrigin("X"), filter=1e-5)
-    data.record_sparsity(nav_agent.getNode("QNetwork").getNode("state_pop").getOrigin("AXON"), filter=1e-5)
-    data.record_avg(nav_agent.getNode("QNetwork").getNode("valdiff").getOrigin("X"), filter=1e-5)
+    #data.record_avg(env.getOrigin("reward"), filter=1e-5)
+    #data.record_avg(nav_agent.getNode("QNetwork").getNode("actionvals").getOrigin("X"), filter=1e-5)
+    #data.record_sparsity(nav_agent.getNode("QNetwork").getNode("state_pop").getOrigin("AXON"), filter=1e-5)
+    #data.record_avg(nav_agent.getNode("QNetwork").getNode("valdiff").getOrigin("X"), filter=1e-5)
     # ErrorNetwork is apparently not the correct name and hell if I know what the correct one is
     #data.record_avg(nav_agent.getNode("ErrorNetwork").getOrigin("error"), filter=1e-5)
+
+    # Try recording everything
 
     net.add_to_nengo()
     net.view()
@@ -574,7 +576,7 @@ NodeThreadPool.setNumJavaThreads(8) #Set it equal to the number of cores?
 #                   "load_weights":os.path.join("delivery", "flat", "NavAgent")},
 #                  seed=2)
 
-run_flat_delivery({"learningrate":9e-10, "manual_control":True, "discount":0.1, "Qradius":2.0,
+run_flat_delivery({"learningrate":9e-10, "manual_control":False, "discount":0.1, "Qradius":2.0,
                    "load_weights":os.path.join("delivery", "flat", "NavAgent")},
                   seed=2)
 

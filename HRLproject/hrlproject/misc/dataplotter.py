@@ -4,7 +4,7 @@ import os
 
 import pylab as plt
 
-filename = os.path.join("..", "..", "data", "dataoutput.txt")
+filename = os.path.join("..", "..", "data", "dataoutput_pretrain.txt")
 
 #plt.ion()
 

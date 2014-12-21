@@ -37,7 +37,8 @@ class BGNode(nef.SimpleNode):
         
     def termination_input(self, x):
         self.vals = x
-        
+    
+    # where is this used?
     def termination_noise(self, x):
         self.noise = x
         
@@ -50,8 +51,10 @@ class BGNode(nef.SimpleNode):
     def origin_saved_vals(self):
         return [1.0 if i == self.saved_vals.index(max(self.saved_vals)) else 0.0 for i in range(self.d)]
     
+    # What's the difference between curr_action and saved_action?
     def origin_curr_action(self):
         return self.actions[self.vals.index(max(self.vals))][1]
     
+    # This is apparently where the real output comes out
     def origin_saved_action(self):
         return self.actions[self.saved_vals.index(max(self.saved_vals))][1]

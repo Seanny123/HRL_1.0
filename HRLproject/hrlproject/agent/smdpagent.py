@@ -23,7 +23,7 @@ class SMDPAgent(NetworkImpl):
 
     def __init__(self, stateN, stateD, actions, name="SMDPAgent", stateradius=1.0, Qradius=1.0, rewardradius=1.0,
                  learningrate=0.0, manual_control=False, optimal_control=False, state_encoders=None,
-                 state_evals=None, load_weights=None, discount=0.3, state_threshold=0.0):
+                 state_evals=None, load_weights=None, discount=0.3, state_threshold=0.0, sean_control=False):
         """Builds the SMDPAgent network.
 
         :param stateN: number of neurons in state population
@@ -51,7 +51,7 @@ class SMDPAgent(NetworkImpl):
 
         # internal parameters
         num_actions = len(actions)
-        useBGNode = True # if True, use a simplenode to perform BG function
+        useBGNode = False # if True, use a simplenode to perform BG function
         useErrorNode = True # if True, use a simplenode to perform error calculation
 
         # calculate Q values # By "weights" does he mean the amount of reward? No he means the connection weights for computing the function
@@ -67,6 +67,7 @@ class SMDPAgent(NetworkImpl):
             bg = bgnetwork.BGNetwork(actions, Qradius)
             net.add(bg)
         else:
+            # Why doesn't this have any noise input?
             bg = bgnode.BGNode(actions)
             net.add(bg)
 
@@ -85,6 +86,10 @@ class SMDPAgent(NetworkImpl):
             # towards optimal actions without overruling it completely)
             net.connect(q_net.getOrigin("vals"), biased_vals)
             net.connect(biased_vals, bg.getTermination("input"))
+        elif sean_control:
+            # just follow a piecewise defined function
+            # WHAT TIMESTEP SHOULD I USE?
+            net.make_input("sean_control", {0.0:[0, 0.1], 0.5:[1, 0], 1.0:[0, 1]})
         else:
             net.connect(q_net.getOrigin("vals"), bg.getTermination("input"))
 

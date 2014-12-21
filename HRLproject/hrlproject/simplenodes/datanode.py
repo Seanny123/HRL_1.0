@@ -68,8 +68,6 @@ class DataNode(nef.SimpleNode):
                 s = [s]
 
             # apply filter to data
-#            r[-1][1] *= 1 - f
-#            r[-1][1] += f * s
             r[-1][1] = [x*(1-f) + y*f for x,y in zip(r[-1][1], s)]
 
             # if period has elapsed, create a new data entry
