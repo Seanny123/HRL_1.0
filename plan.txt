@@ -28,7 +28,6 @@ This is what I'm getting so far: the error is calculated from the accumulated me
 Aside:
 Is there any way to distinguish encrypted information (or any type of code really) from randomly distributed Gaussian noise?
 
-cs.stackexchange questions:
-Number of environmental contexts in hierarchical learning, do they have to be proportional to the number of rewards?
-
-Cool stuff to display in layout:
+Work term report:
+NoiseNode is the code I need to modify
+What network has the action decision output?

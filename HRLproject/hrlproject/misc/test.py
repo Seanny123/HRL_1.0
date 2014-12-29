@@ -14,10 +14,9 @@ if compname == "CTN04" or compname == "DANIEL-PC":
 elif compname == "ctngpu2":
     sys.path.append("/home/ctnuser/drasmuss/HRLproject")
 elif compname == "hybrid":
-    sys.path.append("/home/sean/HRL_link")
-    sys.path.append("/home/sean/HRL_link/HRLproject/hrlproject/misc")
-    sys.path.append("/home/sean/HRL_link/HRLproject/hrlproject")
-    sys.path.append("/home/sean/HRL_link/HRLproject")
+    sys.path.append("/home/sean/GitHub-linux/HRL_1.0")
+    sys.path.append("/home/sean/GitHub-linux/HRL_1.0/HRLproject/hrlproject")
+    sys.path.append("/home/sean/GitHub-linux/HRL_1.0/HRLproject")
 elif compname == "CTN11":
     sys.path.append("/home/saubin/git/HRL_1.0")
     sys.path.append("/home/saubin/git/HRL_1.0/HRLproject/hrlproject")
@@ -227,7 +226,8 @@ def test_gridworld():
 
 #    agent.loadWeights("weights\\potjansgrid")
     # Could I make an even smaller grid?
-    env = gridworldenvironment.GridWorldEnvironment(stateD, actions, HRLutils.datafile("tinygrid.txt"),
+    #env = gridworldenvironment.GridWorldEnvironment(stateD, actions, HRLutils.datafile("tinygrid.txt"),
+    env = gridworldenvironment.GridWorldEnvironment(stateD, actions, "/home/sean/GitHub-linux/HRL_1.0/HRLproject/data/tinygrid.txt",
                                                     cartesian=True, delay=(0.6, 0.9), datacollection=False)
     net.add(env)
 
@@ -241,9 +241,9 @@ def test_gridworld():
     net.connect(agent.getOrigin("action_output"), env.getTermination("action"))
     net.connect(agent.getOrigin("Qs"), env.getTermination("Qs"))
 
-    #
     net.add_to_nengo()
     net.view()
+    #net.run(5)
     # I think this stuff was breaking things?
     #view = timeview.View(net.network, update_frequency=5)
     #view.add_watch(gridworldwatch.GridWorldWatch())

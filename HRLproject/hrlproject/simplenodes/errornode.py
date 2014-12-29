@@ -49,9 +49,11 @@ class ErrorNode(nef.SimpleNode):
         if self.learn < 0.1:
             return [0 for _ in range(self.d)]
         
+        # how large is this thing?
         e = [self.curr_error/self.Qradius
              if i == self.saved_bg.index(max(self.saved_bg)) else 0 for i in range(self.d)]
         
+        # make sure the error doesn't exceed a maximum
         for i,x in enumerate(e):
             if x < -self.errorcap:
                 e[i] = -self.errorcap
@@ -60,10 +62,10 @@ class ErrorNode(nef.SimpleNode):
             
         #add bias
         e = [x+self.pos_bias if self.saved_bg[i] < 0 else x for i,x in enumerate(e)]
-        
         return e
     
-    # but where is this used? Just to show that there is an error, regardless of what dimension it's in?
+    # but where is this used, since it's not used in smpdagent?
+    # Just to show that there is an error, regardless of what dimension it's in?
     def origin_curr_error(self):
         return [self.curr_error]
         

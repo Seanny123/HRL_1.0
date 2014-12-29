@@ -24,7 +24,7 @@ class BGNetwork(NetworkImpl):
     :output saved_action: saved curr_action output (see save_output)
     """
 
-    def __init__(self, actions, Qradius=1):
+    def __init__(self, actions, noise_func=None, Qradius=1):
         """Builds the BGNetwork.
 
         :param actions: actions available to the system
@@ -62,6 +62,7 @@ class BGNetwork(NetworkImpl):
         bg.exposeOrigin(bgoutput.getOrigin("X"), "X")
 
         # insert noise (used to give some randomness to drive exploration)
+        # okay, how do I move this outside of this network?
         noiselevel = net.make_input("noiselevel", [noiselevel])
 
         noise = noisenode.NoiseNode(1, dimension=len(actions))
@@ -121,6 +122,7 @@ class BGNetwork(NetworkImpl):
         net.connect(saved_vals, saved_vals_threshold, pstc=self.tauPSC)
 
         self.exposeTermination(bg.getTermination("input"), "input")
+        #self.exposeTermination() # expose the scale node for easy access
         self.exposeTermination(save_relay.getTermination("input"), "save_output")
         self.exposeOrigin(val_threshold.getOrigin("output"), "curr_vals")
         self.exposeOrigin(weight_actions.getOrigin("X"), "curr_action")

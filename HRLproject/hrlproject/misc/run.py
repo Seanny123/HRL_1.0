@@ -559,6 +559,11 @@ def run_badreenvironment(nav_args, ctrl_args, seed=None, flat=False):
 #    net.view()
     net.run(2000)
 
+def run_workTermReport():
+    # run a bunch of configs
+    config = {"time": {"linear": "please"}}
+    # start at twice the normal scale and then let it degrade
+
 NodeThreadPool.setNumJavaThreads(8) #Set it equal to the number of cores?
 
 #run_deliveryenvironment({"learningrate": 9e-10, "discount": 0.1, "Qradius": 2.0,
