@@ -145,7 +145,8 @@ class GridWorldEnvironment(et.EnvironmentTemplate):
                 print("HOT DAMN REWARD")
                 self.reward = 1
             else:
-                self.reward = 0
+                # as seen in delivery task, negative reward for lally-gagging
+                self.reward = -0.05 #0
 
             # calculate the new learn/reset periods
             statedelay = 0.2 # time to wait after a statechange

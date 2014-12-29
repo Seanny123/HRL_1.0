@@ -34,8 +34,9 @@ from hrlproject.environment import (gridworldenvironment, boxenvironment,
                                     contextenvironment, deliveryenvironment,
                                     placecell_bmp, badreenvironment,
                                     pongenvironment)
-from hrlproject.simplenodes import (datanode, terminationnode, errornode,
-                                    badre_pseudoreward, decoderlearningnode)
+from hrlproject.simplenodes import (datanode, terminationnode, errornode, 
+                                    scalenode, badre_pseudoreward,
+                                    decoderlearningnode)
 from hrlproject.misc.HRLutils import rand as random
 
 from ca.nengo.model import Units, SimulationMode
@@ -1059,9 +1060,7 @@ def test_pongenvironment_hier():
     
     net.connect(env.getOrigin("state"), navstate, transform=[[0, 1], [0, 0]])
     net.connect(ctrl_agent.getOrigin("action_output"), navstate, transform=[[0], [1]])
-    net.connect(navstate, nav_agent.getTermination("state_input"), function=lambda x: [math.sin(x[0])*math.cos(x[1]),
-                                                                                       math.sin(x[0])*math.sin(x[1]),
-                                                                                       math.cos(x[0])])
+    net.connect(navstate, nav_agent.getTermination("state_input"), function=lambda x: [math.sin(x[0])*math.cos(x[1]), math.sin(x[0])*math.sin(x[0])])
 
     net.connect(navstate, nav_agent.getTermination("reward"), function=lambda x: 0.5 if abs(x[0] - x[1]) < 0.2 else -0.05)
     
@@ -1117,9 +1116,34 @@ def test_memory():
     net.add_to_nengo()
     net.view(play=1000)
 
+def test_scalenode():
+    import pdb
+    net = nef.Network("scalenode_test")
+
+    #constant_node = scalenode.TimeScale(100, 1, lambda t: 0.03, "constant")
+    #net.add(constant_node)
+    #linear_node = scalenode.TimeScale(100, 1, lambda t: 0.06-t*0.06/15, "linear")
+    #net.add(linear_node)
+    #exp_node = scalenode.TimeScale(100, 1, lambda t: 0.06*math.exp(-7/15*t), "exp")
+    #net.add(exp_node)
+
+    net.make_input("state_input", {0.5:[0,2], 1:[0,1]})
+    state_node = scalenode.StateScale(1, 1, 2, 4, 0)
+    net.add(state_node)
+    #pdb.set_trace()
+    net.connect("state_input", state_node.getOrigin("state"))
+
+    #net.make_input("error_input" [0, 1, 0, 0])
+    #error_node = scalenode.ErrorScale(1, 2)
+    #net.connect("error_input", "ErrorScaleNode")
+
+    net.add_to_nengo()
+    net.run(1000)
+
 #test_boxworld()
 #test_memory()
-test_gridworld()
+test_scalenode()
+#test_gridworld()
 #test_decoderlearning()
 #test_placecellenvironment()
 #test_sparsestate()

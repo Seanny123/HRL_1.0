@@ -21,7 +21,7 @@ What are the chances of a shitty servo fucking me over? If it does fuck me over,
 Resolved:
 What's the easiest way to measure the distance between a robot and it's target? Or is there a really easy way to do it with RFID chips? Is it even necessary or do I just need to check if they make contact? Yes! I think a colour sensor on the floor of the robot would be good enough! However, a way for detecting if a wall has been hit is another thing.
 
-So the error calculation only happens after the goal is reached? I'm really not clear on if it's calculated at every state transition or if it's calculated once at the end. They're modified all the time! The robot creates a map!
+So the error calculation only happens after the goal is reached? I'm really not clear on if it's calculated at every state transition or if it's calculated once at the end. They're modified all the time! The robot creates a map in realtime!
 
 This is what I'm getting so far: the error is calculated from the accumulated memories and experience of the agent in the space. But how the hell does this translate to generalizability? Or is that just with hierarchical learning this occurs? It's just with hierarchical learning.
 
@@ -30,4 +30,7 @@ Is there any way to distinguish encrypted information (or any type of code reall
 
 Work term report:
 NoiseNode is the code I need to modify
-What network has the action decision output?
+The environment has the action decision output
+First make the nodes
+Then connect the nodes
+Then run all the tests
