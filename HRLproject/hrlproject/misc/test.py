@@ -1131,11 +1131,12 @@ def test_scalenode():
     state_node = scalenode.StateScale(1, 1, 2, 4, 0)
     net.add(state_node)
     #pdb.set_trace()
-    net.connect("state_input", state_node.getOrigin("state"))
+    net.connect("state_input", state_node.getTermination("state"))
 
     #net.make_input("error_input" [0, 1, 0, 0])
     #error_node = scalenode.ErrorScale(1, 2)
-    #net.connect("error_input", "ErrorScaleNode")
+    #net.add(error_node)
+    #net.connect("error_input", error_node.getTermination("error"))
 
     net.add_to_nengo()
     net.run(1000)
