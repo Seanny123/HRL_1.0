@@ -31,6 +31,8 @@ Is there any way to distinguish encrypted information (or any type of code reall
 Work term report:
 NoiseNode is the code I need to modify
 The environment has the action decision output
-First make the nodes
-Then connect the nodes
+Unit test the state node
+Then connect the time node (yay constants)
+Then figure out the timing for the state and error nodes
+Then figre out the data logging
 Then run all the tests

@@ -1117,9 +1117,9 @@ def test_memory():
     net.view(play=1000)
 
 def test_scalenode():
-    import pdb
     net = nef.Network("scalenode_test")
 
+    # shouldn't this keep track somehow of how much it's queried? But I guess that would just be a gated integrator with a discount factor, which pretty lame. So there's really no point in trying to augment something that is already really lame
     #constant_node = scalenode.TimeScale(100, 1, lambda t: 0.03, "constant")
     #net.add(constant_node)
     #linear_node = scalenode.TimeScale(100, 1, lambda t: 0.06-t*0.06/15, "linear")
@@ -1127,19 +1127,20 @@ def test_scalenode():
     #exp_node = scalenode.TimeScale(100, 1, lambda t: 0.06*math.exp(-7/15*t), "exp")
     #net.add(exp_node)
 
-    net.make_input("state_input", {0.5:[0,2], 1:[0,1]})
-    state_node = scalenode.StateScale(1, 1, 2, 4, 0)
+    # STILL NEED TO TEST
+    # OH GAWD. JUST MAKE A UNIT TEST
+    net.make_input("state_input", {1:[0,0], 2:[0,1], 3:[0,2], 5:[1,0], 6:[1,1]})
+    state_node = scalenode.StateScale(5, 4, 2, 3, 3)
     net.add(state_node)
-    #pdb.set_trace()
-    net.connect("state_input", state_node.getTermination("state"))
+    net.connect("state_input", state_node.getTermination("agent_state"))
 
-    #net.make_input("error_input" [0, 1, 0, 0])
+    #net.make_input("error_input", [0, 1, 0, 0])
     #error_node = scalenode.ErrorScale(1, 2)
     #net.add(error_node)
     #net.connect("error_input", error_node.getTermination("error"))
 
     net.add_to_nengo()
-    net.run(1000)
+    net.view(play=1000)
 
 #test_boxworld()
 #test_memory()

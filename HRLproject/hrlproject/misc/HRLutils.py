@@ -85,6 +85,9 @@ def normalize(vec):
         return [0.0 for x in vec]
     return [x / length for x in vec]
 
+def difference(vec1, vec2):
+    return [x - y for x, y in zip(vec1, vec2)]
+
 
 # a thread that periodically calls a given function (used to periodically save
 # connection weights)
