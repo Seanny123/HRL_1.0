@@ -15,7 +15,7 @@ class GridWorldEnvironment(et.EnvironmentTemplate):
     :output reset: 1 if the agent should reset its error calculation
     """
 
-    def __init__(self, stateD, actions, filename, name="GridWorld", cartesian=False, delay=0.1, datacollection=False):
+    def __init__(self, stateD, actions, filename, name="GridWorld", cartesian=False, delay=0.1, datacollection=False, default_reward = 0.0):
         """Initializes environment variables.
 
         :param stateD: dimension of state
@@ -146,7 +146,8 @@ class GridWorldEnvironment(et.EnvironmentTemplate):
                 self.reward = 1
             else:
                 # as seen in delivery task, negative reward for lally-gagging
-                self.reward = -0.05 #0
+                # temporarily zero because testing
+                self.reward =  0.0
 
             # calculate the new learn/reset periods
             statedelay = 0.2 # time to wait after a statechange

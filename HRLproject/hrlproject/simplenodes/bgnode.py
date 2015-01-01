@@ -38,7 +38,6 @@ class BGNode(nef.SimpleNode):
     def termination_input(self, x):
         self.vals = x
     
-    # where is this used?
     def termination_noise(self, x):
         self.noise = x
         

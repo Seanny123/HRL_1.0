@@ -69,6 +69,7 @@ class BGNetwork(NetworkImpl):
         net.add(noise)
 
         net.connect(noiselevel, noise.getTermination("scale"))
+        # is "bg.bginput" the same as the "input termination" that gets exposed? Yes?
         net.connect(noise.getOrigin("noise"), "bg.bginput", pstc=0.001)
 
         # add bias to shift everything up to 0.5--1.5

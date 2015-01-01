@@ -213,8 +213,6 @@ def test_actionvalues():
     net.view()
 
 def test_gridworld():
-    # WTF? Does this thing even get punished when it hits a wall? WHAT. IT DOESN'T. WHY.
-    # Also, it apparently receives a 0 default reward, unlike the continuous task. BAD.
     net = nef.Network("testGridWorld")
 
     stateN = 400
@@ -222,13 +220,13 @@ def test_gridworld():
     actions = [("up", [0, 1]), ("right", [1, 0]), ("down", [0, -1]), ("left", [-1, 0])]
     # Optimal control really doesn't work here
     # up, right, down, left
-    agent = smdpagent.SMDPAgent(stateN, stateD, actions, Qradius=1, stateradius=3, rewardradius=1, learningrate=9e-10, manual_control=False)
+    agent = smdpagent.SMDPAgent(stateN, stateD, actions, Qradius=1, stateradius=3, rewardradius=1, learningrate=9e-10, manual_control=True)
     net.add(agent)
 
 #    agent.loadWeights("weights\\potjansgrid")
     # Could I make an even smaller grid?
-    #env = gridworldenvironment.GridWorldEnvironment(stateD, actions, HRLutils.datafile("tinygrid.txt"),
-    env = gridworldenvironment.GridWorldEnvironment(stateD, actions, "/home/sean/GitHub-linux/HRL_1.0/HRLproject/data/tinygrid.txt",
+    env = gridworldenvironment.GridWorldEnvironment(stateD, actions, HRLutils.datafile("tinygrid.txt"),
+    #env = gridworldenvironment.GridWorldEnvironment(stateD, actions, "/home/sean/GitHub-linux/HRL_1.0/HRLproject/data/tinygrid.txt",
                                                     cartesian=True, delay=(0.6, 0.9), datacollection=False)
     net.add(env)
 
@@ -1142,10 +1140,18 @@ def test_scalenode():
     net.add_to_nengo()
     net.view(play=1000)
 
+def test_gridexplore():
+    # 3x3, 6x6 locally
+    # 12x12 remotely
+    # try with negative reward
+    # try with neutral reward
+
+
 #test_boxworld()
 #test_memory()
-test_scalenode()
+#test_scalenode()
 #test_gridworld()
+test_gridexplore()
 #test_decoderlearning()
 #test_placecellenvironment()
 #test_sparsestate()

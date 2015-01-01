@@ -5,7 +5,7 @@ import nef
 
 from hrlproject.misc import HRLutils
 from hrlproject.agent import bgnetwork, Qnetwork, errornetwork
-from hrlproject.simplenodes import bgnode, errornode
+from hrlproject.simplenodes import bgnode, errornode, scalenode
 
 
 class SMDPAgent(NetworkImpl):
@@ -51,7 +51,7 @@ class SMDPAgent(NetworkImpl):
 
         # internal parameters
         num_actions = len(actions)
-        useBGNode = False # if True, use a simplenode to perform BG function
+        useBGNode = True # if True, use a simplenode to perform BG function
         useErrorNode = True # if True, use a simplenode to perform error calculation
 
         # calculate Q values # By "weights" does he mean the amount of reward? No he means the connection weights for computing the function
@@ -64,12 +64,18 @@ class SMDPAgent(NetworkImpl):
         # create basal ganglia
         print "building selection network"
         if not useBGNode:
+            # TODO: modify bgnetwork to accept external noise nodes
             bg = bgnetwork.BGNetwork(actions, Qradius)
             net.add(bg)
         else:
             # Why doesn't this have any noise input?
             bg = bgnode.BGNode(actions)
             net.add(bg)
+
+        # create the noise node
+        #noise_node = scalenode.TimeScale(100, 4, lambda t: 0.03, "constant")
+        #net.add(noise_node)
+        #net.connect(noise_node.getOrigin("state"), bg.getTermination("noise"))
 
         if manual_control:
             # This makes a controllable input
