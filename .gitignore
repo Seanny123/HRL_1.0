@@ -17,3 +17,4 @@ log.txt
 .tox
 /HRLproject/data/
 !/HRLproject/data/grids/
+!/HRLproject/data/easygrid.txt
