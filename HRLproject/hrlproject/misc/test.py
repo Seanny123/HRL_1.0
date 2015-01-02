@@ -227,9 +227,10 @@ def test_gridworld():
 
 #    agent.loadWeights("weights\\potjansgrid")
     # Could I make an even smaller grid?
-    env = gridworldenvironment.GridWorldEnvironment(stateD, actions, HRLutils.datafile("easygrid.txt"),
-    #env = gridworldenvironment.GridWorldEnvironment(stateD, actions, "/home/sean/GitHub-linux/HRL_1.0/HRLproject/data/tinygrid.txt",
-                                                    cartesian=True, delay=(0.6, 0.9), datacollection=False)
+    env = gridworldenvironment.GridWorldEnvironment(stateD, actions,
+            HRLutils.datafile("3_3_nogoal_grid.txt"), 
+            state_filename=HRLutils.datafile("data_pants.txt"),
+            cartesian=True, delay=(0.6, 0.9), datacollection=False)
     net.add(env)
 
     # create the noise node
@@ -246,12 +247,6 @@ def test_gridworld():
 
     net.connect(agent.getOrigin("action_output"), env.getTermination("action"))
     net.connect(agent.getOrigin("Qs"), env.getTermination("Qs"))
-
-    data = datanode.DataNode(show_plots=None, 
-        filename=HRLutils.datafile("data_pants.txt")
-    )
-    net.add(data)
-    data.record(env.getOrigin("state"))
 
     net.add_to_nengo()
     net.view()
@@ -1156,8 +1151,7 @@ def test_scalenode():
 def test_gridexplore():
     noise_node_list = [
         scalenode.TimeScale(1000, 4, lambda t: 0.00, "none"),
-        scalenode.TimeScale(1000, 4, lambda t: 0.03, "normal"),
-        scalenode.TimeScale(1000, 4, lambda t: 0.06, "double")
+        scalenode.TimeScale(1000, 4, lambda t: 0.03, "normal")
     ]
     grid_list = [
         "3_3_nogoal_grid.txt",

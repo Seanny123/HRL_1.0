@@ -15,7 +15,7 @@ class GridWorldEnvironment(et.EnvironmentTemplate):
     :output reset: 1 if the agent should reset its error calculation
     """
 
-    def __init__(self, stateD, actions, filename, name="GridWorld", cartesian=False, delay=0.1, datacollection=False, default_reward = 0.0):
+    def __init__(self, stateD, actions, filename, name="GridWorld", cartesian=False, delay=0.1, datacollection=False, default_reward = 0.0, state_filename=""):
         """Initializes environment variables.
 
         :param stateD: dimension of state
@@ -30,6 +30,11 @@ class GridWorldEnvironment(et.EnvironmentTemplate):
         """
 
         et.EnvironmentTemplate.__init__(self, name, stateD, actions)
+
+        self.state_filename = state_filename
+        if(state_filename != ""):
+            f = open(state_filename, "w")
+            f.close()
 
         self.cartesian = cartesian
         self.delay = delay # time to spend in each grid state (can be a float, or tuple specifying range)
@@ -103,7 +108,13 @@ class GridWorldEnvironment(et.EnvironmentTemplate):
 
             # update state
             if self.getCell(self.state).target:
-                print("REACHED THE TARGET!")
+
+                if(self.state_filename != ""):
+                    file_writer = open(self.state_filename, "a")
+                    file_writer.write("r\n")
+                    file_writer.close()
+
+                print("REACHED THE TARGET")
                 self.state = self.pickRandomLocation()
 
                 # data collection
@@ -134,7 +145,12 @@ class GridWorldEnvironment(et.EnvironmentTemplate):
                 if not dest.wall:
                     self.state = dest.location()
 
-                print("%s STATE: %s" %(self.t, self.state))
+            if(self.state_filename != ""):
+                file_writer = open(self.state_filename, "a")
+                file_writer.write("%s %s %s" %(self.t, self.state[0], self.state[1]))
+                file_writer.write("\n")
+                file_writer.close()
+            print("%s STATE: %s" %(self.t, self.state))
 
             # add extra time in this state if it's mud
             if self.getCell(self.state).mud:

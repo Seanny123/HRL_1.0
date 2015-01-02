@@ -42,9 +42,7 @@ Actually, saying that something simple is super-inneffective, thus more complica
 
 Okay, we need to re-run the fucking tests
 
-Make you repository public again
 Stop CTNGPU1
-Change the goddamn file to write out not-insane output
-Run 3x3 and 6x6 and 12x12 at 0, 0.03 on Dan's computer
-Run just the little grid on CTNGPU2 with negative feedback
-Run time reward task on CTNGPU1
+DEFINITLY Run 3x3 and 6x6 and 12x12 at 0, 0.03 on Dan's computer
+MAYBE? Run just the little grid on CTNGPU2 with negative feedback
+MAYBE? Run time reward task on CTNGPU1
