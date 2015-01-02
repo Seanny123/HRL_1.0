@@ -35,3 +35,16 @@ Then connect the time node (yay constants)
 Then figure out the timing for the state and error nodes
 Then figre out the data logging
 Then run all the tests
+
+Call Terry
+If all the tests give buggered results, just say that you tried and fuck everything that isn't Nengo 2.0 and model-based.
+Actually, saying that something simple is super-inneffective, thus more complicated methods should be investigated is a pretty legitimate response.
+
+Okay, we need to re-run the fucking tests
+
+Make you repository public again
+Stop CTNGPU1
+Change the goddamn file to write out not-insane output
+Run 3x3 and 6x6 and 12x12 at 0, 0.03 on Dan's computer
+Run just the little grid on CTNGPU2 with negative feedback
+Run time reward task on CTNGPU1

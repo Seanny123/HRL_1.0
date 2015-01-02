@@ -100,8 +100,6 @@ class GridWorldEnvironment(et.EnvironmentTemplate):
             x, y = self.state
             # (x, y) = all_the_Qs
             self.Qs[(int(x + self.xoffset), int(self.yscale * y + self.yoffset))] = [n for n in self.Qinput]
-            print("DEM Qs Doe!")
-            print self.Qs
 
             # update state
             if self.getCell(self.state).target:
@@ -135,6 +133,8 @@ class GridWorldEnvironment(et.EnvironmentTemplate):
 
                 if not dest.wall:
                     self.state = dest.location()
+
+                print("%s STATE: %s" %(self.t, self.state))
 
             # add extra time in this state if it's mud
             if self.getCell(self.state).mud:

@@ -16,3 +16,6 @@ log.txt
 .cache
 .tox
 HRLproject/data/
+!HRLproject/data/3_3_nogoal_grid.txt
+!HRLproject/data/6_6_nogoal_grid.txt
+!HRLproject/data/easygrid.txt
