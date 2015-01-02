@@ -1,6 +1,7 @@
 *.pyc
 *.pkc
 *.class
+*$py.class
 .DS_Store
 _build
 build
