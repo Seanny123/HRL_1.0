@@ -72,11 +72,6 @@ class SMDPAgent(NetworkImpl):
             bg = bgnode.BGNode(actions)
             net.add(bg)
 
-        # create the noise node
-        #noise_node = scalenode.TimeScale(100, 4, lambda t: 0.03, "constant")
-        #net.add(noise_node)
-        #net.connect(noise_node.getOrigin("state"), bg.getTermination("noise"))
-
         if manual_control:
             # This makes a controllable input
             # The action sequence is up, right, down, left ???
@@ -122,6 +117,7 @@ class SMDPAgent(NetworkImpl):
         self.exposeTermination(error_net.getTermination("learn"), "learn")
         self.exposeTermination(bg.getTermination("save_output"), "save_action")
         self.exposeOrigin(bg.getOrigin("saved_action"), "action_output")
+        self.exposeTermination(bg.getTermination("noise"), "noise")
         self.exposeOrigin(q_net.getOrigin("vals"), "Qs")
 
         if HRLutils.SIMULATION_MODE == SimulationMode.DIRECT:

@@ -30,9 +30,10 @@ class BGNode(nef.SimpleNode):
         if self.save > 0.1:
             self.saved_vals = copy.deepcopy(self.vals)
         
-        #add noise to the values, which encourages exploration
-        #have to put this in here (rather than in termination) to be sure it is executed 
-        #after all the termination values are set
+        # add noise to the values, which encourages exploration
+        # have to put this in here (rather than in termination) 
+        # to be sure it is executed 
+        # after all the termination values are set
         self.vals = [x+y for x,y in zip(self.noise,self.vals)]
         
     def termination_input(self, x):

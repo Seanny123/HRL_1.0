@@ -44,10 +44,12 @@ from ca.nengo.model.impl import (NetworkImpl, FunctionInput)
 from ca.nengo.math.impl import (ConstantFunction, PiecewiseConstantFunction,
                                 IdentityFunction, IndicatorPDF)
 from ca.nengo.util import MU #Matrix utlities
+from ca.nengo.util.impl import NodeThreadPool
 
 import nef
 import timeview
 from nef.templates import hpes_termination
+import datetime
 
 # This method doesn't appear to be used anymore
 def test_errorcalc():
@@ -220,7 +222,7 @@ def test_gridworld():
     actions = [("up", [0, 1]), ("right", [1, 0]), ("down", [0, -1]), ("left", [-1, 0])]
     # Optimal control really doesn't work here
     # up, right, down, left
-    agent = smdpagent.SMDPAgent(stateN, stateD, actions, Qradius=1, stateradius=3, rewardradius=1, learningrate=9e-10, manual_control=True)
+    agent = smdpagent.SMDPAgent(stateN, stateD, actions, Qradius=1, stateradius=3, rewardradius=1, learningrate=9e-10, manual_control=False)
     net.add(agent)
 
 #    agent.loadWeights("weights\\potjansgrid")
@@ -229,6 +231,11 @@ def test_gridworld():
     #env = gridworldenvironment.GridWorldEnvironment(stateD, actions, "/home/sean/GitHub-linux/HRL_1.0/HRLproject/data/tinygrid.txt",
                                                     cartesian=True, delay=(0.6, 0.9), datacollection=False)
     net.add(env)
+
+    # create the noise node
+    noise_node = scalenode.TimeScale(100, 4, lambda t: 0.06, "constant")
+    net.add(noise_node)
+    net.connect(noise_node.getOrigin("state"), agent.getTermination("noise"))
 
     net.connect(env.getOrigin("state"), agent.getTermination("state_input"))
     net.connect(env.getOrigin("reward"), agent.getTermination("reward"))
@@ -239,6 +246,12 @@ def test_gridworld():
 
     net.connect(agent.getOrigin("action_output"), env.getTermination("action"))
     net.connect(agent.getOrigin("Qs"), env.getTermination("Qs"))
+
+    data = datanode.DataNode(show_plots=None, 
+        filename=HRLutils.datafile("data_pants.txt")
+    )
+    net.add(data)
+    data.record(env.getOrigin("state"))
 
     net.add_to_nengo()
     net.view()
@@ -1141,11 +1154,72 @@ def test_scalenode():
     net.view(play=1000)
 
 def test_gridexplore():
-    # 3x3, 6x6 locally
-    # 12x12 remotely
-    # try with negative reward
-    # try with neutral reward
+    noise_node_list = [
+        scalenode.TimeScale(1000, 4, lambda t: 0.00, "none"),
+        scalenode.TimeScale(1000, 4, lambda t: 0.03, "normal"),
+        scalenode.TimeScale(1000, 4, lambda t: 0.06, "double")
+    ]
+    grid_list = [
+        "3_3_nogoal_grid.txt",
+        "6_6_nogoal_grid.txt",
+        "easygrid.txt"
+    ]
+    reward_list = [
+        0.0,
+        -0.05
+    ]
 
+    for runs in range(3):
+        for grid in grid_list:
+            for reward in reward_list:
+                for node_index in range(len(noise_node_list)):
+                    HRLutils.set_seed(runs)
+                    net = nef.Network("testGridWorld")
+
+                    stateN = 400
+                    stateD = 2
+                    actions = [("up", [0, 1]), ("right", [1, 0]), ("down", [0, -1]), ("left", [-1, 0])]
+                    # Optimal control really doesn't work here
+                    # up, right, down, left
+                    agent = smdpagent.SMDPAgent(stateN, stateD, actions, Qradius=1, stateradius=3, rewardradius=1, learningrate=9e-10, manual_control=False)
+                    net.add(agent)
+
+                #    agent.loadWeights("weights\\potjansgrid")
+                    # Could I make an even smaller grid?
+                    env = gridworldenvironment.GridWorldEnvironment(
+                        stateD, actions, HRLutils.datafile(grid),
+                        cartesian=True, delay=(0.6, 0.9), datacollection=False, default_reward=reward)
+                    net.add(env)
+
+                    net.connect(env.getOrigin("state"), agent.getTermination("state_input"))
+                    net.connect(env.getOrigin("reward"), agent.getTermination("reward"))
+                    net.connect(env.getOrigin("reset"), agent.getTermination("reset"))
+                    net.connect(env.getOrigin("learn"), agent.getTermination("learn"))
+                    net.connect(env.getOrigin("reset"), agent.getTermination("save_state"))
+                    net.connect(env.getOrigin("reset"), agent.getTermination("save_action"))
+
+                    net.connect(agent.getOrigin("action_output"), env.getTermination("action"))
+                    net.connect(agent.getOrigin("Qs"), env.getTermination("Qs"))
+
+                    current_node = noise_node_list[node_index]
+                    data = datanode.DataNode(
+                        period=5, show_plots=None, 
+                        filename=HRLutils.datafile("data_%s_%s_%s_%s.txt" % (runs, grid,reward, node_index))
+                    )
+                    net.add(data)
+                    data.record(env.getOrigin("state"))
+                    net.add(current_node)
+                    net.connect(current_node.getOrigin("state"), agent.getTermination("noise"))
+                    #net.run(2)
+                    net.run(20*60)
+                    #net.remove(current_node)
+                    #net.remove(data)
+                    #net.reset()
+
+    print("Finished at %s" %datetime.datetime.now())
+
+
+NodeThreadPool.setNumJavaThreads(8)
 
 #test_boxworld()
 #test_memory()
