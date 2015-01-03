@@ -11,8 +11,10 @@ import os
 compname = socket.gethostname()
 if compname == "CTN04" or compname == "DANIEL-PC":
     sys.path.append(r"D:\Documents\officesvn\HRLproject")
-elif compname == "ctngpu2":
-    sys.path.append("/home/ctnuser/drasmuss/HRLproject")
+elif compname == "ctngpu2" or compname == "ctngpu1":
+    sys.path.append("/home/ctnuser/saubin/HRL_1.0")
+    sys.path.append("/home/ctnuser/saubin/HRL_1.0/HRLproject/hrlproject")
+    sys.path.append("/home/ctnuser/saubin/HRL_1.0/HRLproject")
 elif compname == "hybrid":
     sys.path.append("/home/sean/GitHub-linux/HRL_1.0")
     sys.path.append("/home/sean/GitHub-linux/HRL_1.0/HRLproject/hrlproject")
