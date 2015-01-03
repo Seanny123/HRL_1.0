@@ -16,6 +16,8 @@ log.txt
 .cache
 .tox
 /HRLproject/.settings
-/HRLproject/data/
-!/HRLproject/data/grids/
+/HRLproject/.project
+/HRLproject/.pydev
+/HRLproject/data/*
+!/HRLproject/data/grids/*
 !/HRLproject/data/easygrid.txt
