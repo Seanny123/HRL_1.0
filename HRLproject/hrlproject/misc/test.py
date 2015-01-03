@@ -17,6 +17,11 @@ elif compname == "hybrid":
     sys.path.append("/home/sean/GitHub-linux/HRL_1.0")
     sys.path.append("/home/sean/GitHub-linux/HRL_1.0/HRLproject/hrlproject")
     sys.path.append("/home/sean/GitHub-linux/HRL_1.0/HRLproject")
+elif compname == "daniels-imac":
+    print("DANDANDANDAN")
+    sys.path.append("/Users/danielaubin/Desktop/Sean_stuff/HRL_1.0")
+    sys.path.append("/Users/danielaubin/Desktop/Sean_stuff/HRL_1.0/HRLproject/hrlproject")
+    sys.path.append("/Users/danielaubin/Desktop/Sean_stuff/HRL_1.0/HRLproject")
 elif compname == "CTN11":
     sys.path.append("/home/saubin/git/HRL_1.0")
     sys.path.append("/home/saubin/git/HRL_1.0/HRLproject/hrlproject")
@@ -1154,13 +1159,11 @@ def test_gridexplore():
         scalenode.TimeScale(1000, 4, lambda t: 0.03, "normal")
     ]
     grid_list = [
-        "3_3_nogoal_grid.txt",
-        "6_6_nogoal_grid.txt",
-        "easygrid.txt"
+        "easygrid.txt",
+        "3_3_nogoal_grid.txt"
     ]
     reward_list = [
-        0.0,
-        -0.05
+        0.0
     ]
 
     for runs in range(3):
@@ -1179,6 +1182,7 @@ def test_gridexplore():
 
                     env = gridworldenvironment.GridWorldEnvironment(
                         stateD, actions, HRLutils.datafile(grid),
+                        state_filename=HRLutils.datafile("data_%s_%s_%s_%s.txt" % (runs, grid,reward, node_index)),
                         cartesian=True, delay=(0.6, 0.9), datacollection=False, default_reward=reward)
                     net.add(env)
 
@@ -1193,12 +1197,6 @@ def test_gridexplore():
                     net.connect(agent.getOrigin("Qs"), env.getTermination("Qs"))
 
                     current_node = noise_node_list[node_index]
-                    data = datanode.DataNode(
-                        period=5, show_plots=None, 
-                        filename=HRLutils.datafile("data_%s_%s_%s_%s.txt" % (runs, grid,reward, node_index))
-                    )
-                    net.add(data)
-                    data.record(env.getOrigin("state"))
                     net.add(current_node)
                     net.connect(current_node.getOrigin("state"), agent.getTermination("noise"))
                     #net.run(2)
@@ -1218,7 +1216,7 @@ def test_gridschedule():
         ["error", scalenode.TimeScale(1000, 4, lambda t: 0.03, "normal")],
     ]
     grid_list = [
-        "3_3_cornergoal_grid.txt"
+        "3_3_nogoal_grid.txt"
     ]
     reward_list = [
         -0.05
@@ -1282,8 +1280,8 @@ NodeThreadPool.setNumJavaThreads(8)
 #test_boxworld()
 #test_memory()
 #test_scalenode()
-test_gridworld()
-#test_gridexplore()
+#test_gridworld()
+test_gridexplore()
 #test_decoderlearning()
 #test_placecellenvironment()
 #test_sparsestate()
