@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?eclipse-pydev version="1.0"?><pydev_project>
+<pydev_pathproperty name="org.python.pydev.PROJECT_SOURCE_PATH">
+<path>/HRLproject</path>
+</pydev_pathproperty>
+<pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">jython 2.7</pydev_property>
+<pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">Default</pydev_property>
+<pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">
+<path>D:\Documents\nengogit\nengo_1.4\simulator-ui\python</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator\lib\formsrt.jar</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator\lib\Jama-1.0.2.jar</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator\lib\jcommon-1.0.0.jar</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator\lib\jfreechart-1.0.1.jar</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator\lib\jgrapht-jdk1.5-0.7.3.jar</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator\lib\jmatio.jar</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator\lib\junit.jar</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator\lib\library-licenses.txt</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator\lib\log4j-1.2.16.jar</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator\lib\qdox-1.6.3.jar</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator\lib\ssj.jar</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator-ui\lib\colt.jar</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator-ui\lib\commons-collections-3.2.jar</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator-ui\lib\itextpdf-5.3.4.jar</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator-ui\lib\jayatana-1.2.4.jar</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator-ui\lib\jnumeric-0.1.jar</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator-ui\lib\jung-1.7.6.jar</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator-ui\lib\jython.jar</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator-ui\lib\macify-1.4.jar</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator-ui\lib\piccolo.jar</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator-ui\lib\piccolox.jar</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator\bin</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator-ui\bin</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator-ui\lib\jbullet.jar</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator-ui\lib\jpct.jar</path>
+<path>D:\Documents\nengogit\nengo_1.4\simulator-ui\lib\vecmath.jar</path>
+</pydev_pathproperty>
+</pydev_project>

@@ -1,0 +1,46 @@
+Steps:
+
+Create some layouts and records to show duplicate behaviours. Re-read Dan's e-mail
+Port manual control to Nengo 2.0
+Run manual control with Nengo 2.0
+Figure out what's left of Nengo and OpenCL
+Figure out what's left with Spinnaker
+Run manual control with Nengo and OpenCL
+Port rest to Nengo 2.0
+Run simulation with noise injected into motor control
+
+Figure out robot and Nengo 2.0
+
+Questions:
+Okay, what does running the tests establish?
+
+One of the possibilities is that when I test this thing, the lack of deterministic response means it can't figure out where the hell it is. If I test for that and the system goes to shit, does that mean I need to implement simultaneous localization and mapping using neurons? What are the state-of-the-art algorithms for that shit and could they be mapped to hippocampal place cells? There might be a wikipedia article on this.
+
+What are the chances of a shitty servo fucking me over? If it does fuck me over, is that when I set up the DVS sensor at the top and tell it to track shit?
+
+Resolved:
+What's the easiest way to measure the distance between a robot and it's target? Or is there a really easy way to do it with RFID chips? Is it even necessary or do I just need to check if they make contact? Yes! I think a colour sensor on the floor of the robot would be good enough! However, a way for detecting if a wall has been hit is another thing.
+
+So the error calculation only happens after the goal is reached? I'm really not clear on if it's calculated at every state transition or if it's calculated once at the end. They're modified all the time! The robot creates a map in realtime!
+
+This is what I'm getting so far: the error is calculated from the accumulated memories and experience of the agent in the space. But how the hell does this translate to generalizability? Or is that just with hierarchical learning this occurs? It's just with hierarchical learning.
+
+Aside:
+Is there any way to distinguish encrypted information (or any type of code really) from randomly distributed Gaussian noise?
+
+Work term report:
+NoiseNode is the code I need to modify
+The environment has the action decision output
+Then connect the time node (yay constants)
+Then figure out the timing for the state and error nodes
+Then figre out the data logging
+Then run all the tests
+
+Call Terry
+If all the tests give buggered results, just say that you tried and fuck everything that isn't Nengo 2.0 and model-based.
+Actually, saying that something simple is super-inneffective, thus more complicated methods should be investigated is a pretty legitimate response.
+
+Stop CTNGPU1
+MAYBE? Run just the little grid on CTNGPU2 with negative feedback
+MAYBE? Run time reward task on CTNGPU1
+DEFINITLY run error and state
