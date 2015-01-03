@@ -19,5 +19,9 @@ log.txt
 /HRLproject/.project
 /HRLproject/.pydev
 /HRLproject/data/*
-!/HRLproject/data/grids/*
 !/HRLproject/data/easygrid.txt
+!/HRLproject/data/3_3_nogoal_grid.txt
+!/HRLproject/data/6_6_nogoal_grid.txt
+!/HRLproject/data/easygrid.txt
+!/HRLproject/data/6_6_cornergoals.txt
+!/HRLproject/data/easy_cornergoals.txt
