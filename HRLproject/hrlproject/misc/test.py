@@ -1207,13 +1207,18 @@ def test_gridexplore():
     print("Finished at %s" %datetime.datetime.now())
 
 def test_gridschedule():
+    #noise_node_list = [
+    #    ["normal", scalenode.TimeScale(100, 1, lambda t: 0.03, "constant")],
+    #    ["exponentional", scalenode.TimeScale(100, 1, lambda t: 0.06*math.exp(-7/15*t), "exp")],
+    #    ["linear", scalenode.TimeScale(100, 1, lambda t: 0.06-t*0.06/15, "linear")]
+    #]
     noise_node_list = [
         ["error", scalenode.ErrorScale(1, 4, 2)],
         ["state", None]
     ]
     grid_list = [
-        ["6_6_cornergoals.txt", 6, 6],
-        ["easy_cornergoals.txt", 12, 12]
+        ["6_6_cornergoals.txt", 7, 7],
+        ["easy_cornergoals.txt", 11, 11]
     ]
     reward_list = [
         -0.05

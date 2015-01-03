@@ -45,6 +45,13 @@ class GridWorldEnvironment(et.EnvironmentTemplate):
         self.num_actions = len(actions)
         self.chosen_action = None
         self.datacollection = datacollection
+        self.respawn_count = 0
+        self.respawn_list = [
+                                [-2, -2],
+                                [2, -2],
+                                [-2, 2],
+                                [2, 2],
+                            ]
 
         #data collection
         self.latencies = [] # record of how long it took (relative to optimal) to reach goal on each trial
@@ -115,7 +122,9 @@ class GridWorldEnvironment(et.EnvironmentTemplate):
                     file_writer.close()
 
                 print("REACHED THE TARGET")
-                self.state = self.pickRandomLocation()
+                #self.state = self.pickRandomLocation()
+                self.state = self.respawn_list[(self.respawn_count%len(self.respawn_list))]
+                self.respawn_count +=1
 
                 # data collection
                 self.latencies += [self.stepcount - self.manhat - 1]
