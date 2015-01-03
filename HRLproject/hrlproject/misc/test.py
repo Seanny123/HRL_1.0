@@ -18,7 +18,6 @@ elif compname == "hybrid":
     sys.path.append("/home/sean/GitHub-linux/HRL_1.0/HRLproject/hrlproject")
     sys.path.append("/home/sean/GitHub-linux/HRL_1.0/HRLproject")
 elif compname == "daniels-imac":
-    print("DANDANDANDAN")
     sys.path.append("/Users/danielaubin/Desktop/Sean_stuff/HRL_1.0")
     sys.path.append("/Users/danielaubin/Desktop/Sean_stuff/HRL_1.0/HRLproject/hrlproject")
     sys.path.append("/Users/danielaubin/Desktop/Sean_stuff/HRL_1.0/HRLproject")
@@ -1209,14 +1208,12 @@ def test_gridexplore():
 
 def test_gridschedule():
     noise_node_list = [
-        ["time", scalenode.TimeScale(1000, 4, lambda t: 0.03, "normal")],
-        ["time", scalenode.TimeScale(1000, 4, lambda t: 0.03, "normal")],
-        ["time", scalenode.TimeScale(1000, 4, lambda t: 0.03, "normal")],
-        ["state", scalenode.TimeScale(1000, 4, lambda t: 0.03, "normal")],
-        ["error", scalenode.TimeScale(1000, 4, lambda t: 0.03, "normal")],
+        ["error", scalenode.ErrorScale(1, 4, 2)],
+        ["state", None]
     ]
     grid_list = [
-        "3_3_nogoal_grid.txt"
+        ["6_6_cornergoals.txt", 6, 6],
+        ["easy_cornergoals.txt", 12, 12]
     ]
     reward_list = [
         -0.05
@@ -1237,7 +1234,8 @@ def test_gridschedule():
                     net.add(agent)
 
                     env = gridworldenvironment.GridWorldEnvironment(
-                        stateD, actions, HRLutils.datafile(grid),
+                        stateD, actions, HRLutils.datafile(grid[0]),
+                        state_filename=HRLutils.datafile("data_%s_%s_%s_%s.txt" % (runs, grid[0], reward, node_index)),
                         cartesian=True, delay=(0.6, 0.9), datacollection=False, default_reward=reward)
                     net.add(env)
 
@@ -1251,24 +1249,25 @@ def test_gridschedule():
                     net.connect(agent.getOrigin("action_output"), env.getTermination("action"))
                     net.connect(agent.getOrigin("Qs"), env.getTermination("Qs"))
 
-                    current_node = noise_node_list[node_index][0]
-                    node_type = noise_node_list[node_index][1]
-                    data = datanode.DataNode(
-                        period=5, show_plots=None, 
-                        filename=HRLutils.datafile("data_%s_%s_%s_%s.txt" % (runs, grid,reward, node_index))
-                    )
-                    net.add(data)
-                    data.record(env.getOrigin("state"))
+                    current_node = noise_node_list[node_index][1]
+                    node_type = noise_node_list[node_index][0]
+                    # because the state node needs to know the dimensions of the space
+                    if(node_type == "state"):
+                        current_node = scalenode.StateScale(1, 4, 2, grid[2], grid[1])
+                    print(current_node)
                     net.add(current_node)
 
                     if(node_type == "error"):
-                        net.connect(current_node.getOrigin(""))
+                        net.connect(agent.getOrigin("error"), current_node.getTermination("error"))
                     elif(node_type == "state"):
-                        net.connect(current_node.getOrigin(""))
+                        net.connect(env.getOrigin("state"), current_node.getTermination("agent_state"))
+                    elif(node_type == "error_state"):
+                        net.connect(env.getOrigin("state"), current_node.getTermination("agent_state"))
+                        net.connect(agent.getOrigin("error"), current_node.getTermination("error"))
 
                     net.connect(current_node.getOrigin("state"), agent.getTermination("noise"))
                     #net.run(2)
-                    net.run(30*60)
+                    net.run(40*60)
                     #net.remove(current_node)
                     #net.remove(data)
                     #net.reset()
@@ -1281,7 +1280,8 @@ NodeThreadPool.setNumJavaThreads(8)
 #test_memory()
 #test_scalenode()
 #test_gridworld()
-test_gridexplore()
+#test_gridexplore()
+test_gridschedule()
 #test_decoderlearning()
 #test_placecellenvironment()
 #test_sparsestate()

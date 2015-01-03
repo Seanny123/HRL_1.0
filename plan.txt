@@ -41,6 +41,6 @@ If all the tests give buggered results, just say that you tried and fuck everyth
 Actually, saying that something simple is super-inneffective, thus more complicated methods should be investigated is a pretty legitimate response.
 
 Stop CTNGPU1
-MAYBE? Run just the little grid on CTNGPU2 with negative feedback
-MAYBE? Run time reward task on CTNGPU1
-DEFINITLY run error and state
+DEFINITLY Run just the little grid on CTN11 with negative feedback
+DEFINITLY Run time reward task on CTNGPU1
+DEFINITLY run error and state on CTNGPU2

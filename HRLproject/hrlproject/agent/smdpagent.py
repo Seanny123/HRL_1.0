@@ -119,6 +119,7 @@ class SMDPAgent(NetworkImpl):
         self.exposeOrigin(bg.getOrigin("saved_action"), "action_output")
         self.exposeTermination(bg.getTermination("noise"), "noise")
         self.exposeOrigin(q_net.getOrigin("vals"), "Qs")
+        self.exposeOrigin(error_net.getOrigin("error"), "error")
 
         if HRLutils.SIMULATION_MODE == SimulationMode.DIRECT:
             self.setMode(SimulationMode.RATE) # try to switch everything to rate mode first (better than default)

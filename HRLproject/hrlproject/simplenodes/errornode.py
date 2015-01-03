@@ -67,6 +67,7 @@ class ErrorNode(nef.SimpleNode):
     # but where is this used, since it's not used in smpdagent?
     # Just to show that there is an error, regardless of what dimension it's in?
     def origin_curr_error(self):
+        #print(self.curr_error)
         return [self.curr_error]
         
     def tick(self):
