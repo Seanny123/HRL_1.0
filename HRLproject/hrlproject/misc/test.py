@@ -1246,6 +1246,11 @@ def test_gridschedule():
                         cartesian=True, delay=(0.6, 0.9), datacollection=False, default_reward=reward)
                     net.add(env)
 
+                    data = datanode.DataNode(period=5, show_plots=None, filename=HRLutils.datafile("reward_%s_%s_%s_%s.txt" % (runs, grid[0], reward, node_index)))
+                    filter = 1e-5
+                    net.add(data)
+                    data.record(env.getOrigin("reward"), filter=filter)
+
                     net.connect(env.getOrigin("state"), agent.getTermination("state_input"))
                     net.connect(env.getOrigin("reward"), agent.getTermination("reward"))
                     net.connect(env.getOrigin("reset"), agent.getTermination("reset"))
